@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parlons — AI French Academy</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+<div>
+<div class="logo">Parlons<span>.</span>
+</div>
+<div class="smallcap">AI French Academy</div>
+</div>
+<nav>
+<button class="sidebtn active" id="navCourses">▦　课程与练习</button>
+<button class="sidebtn" id="navReport">▤　学习报告</button>
+<button class="sidebtn" id="navSettings">⚙　AI 模型设置</button>
+</nav>
+<div class="bottom">Parlez avec confiance.<br>从教材目标到真实法国生活。<br>
+<br>个人测试版 · 可导出对话与报告</div>
+</aside>
+<main class="main">
+<div class="top">
+<div>
+<div class="eyebrow">Your personal speaking studio</div>
+<h1 class="heading">Speak French, naturally.</h1>
+<div class="sub">真实场景 · 双向对话 · 即时转写 · 多维度复盘</div>
+</div>
+<button class="btn" id="settingsTop">⚙ 设置模型</button>
+</div>
+<div id="coursesView">
+<button class="btn" id="resumePractice" hidden>返回当前练习</button>
+<div class="levels" id="levels">
+</div>
+<div class="flex" style="justify-content:space-between;margin-bottom:14px">
+<strong id="catalogTitle">A1 · 初级法语</strong>
+<span class="stat" id="catalogCount">
+</span>
+</div>
+<div class="coursegrid" id="coursegrid">
+</div>
+</div>
+<div id="practiceView" class="hidden">
+<div class="flex" style="justify-content:space-between;margin:25px 0 12px">
+<button class="btn" id="back">← 返回课程</button>
+<span class="pill" id="practiceLevel">
+</span>
+</div>
+<div class="layout">
+<section class="panel">
+<div class="pad">
+<div class="eyebrow" id="lessonUnit">
+</div>
+<h2 style="font-family:Georgia,serif;font-weight:500;font-size:27px;margin:8px 0" id="lessonTitle">
+</h2>
+<div class="sub" id="lessonGoal">
+</div>
+<div class="flex" style="margin-top:13px">
+<span class="pill" id="modelStatus">演示模式</span>
+<span class="status" id="status" role="status">准备开始</span>
+</div>
+</div>
+<div class="conversation" id="conversation" aria-live="polite">
+</div>
+<div class="composer">
+<textarea id="reply" aria-label="法语回复" maxlength="2000" placeholder="用法语回答，也可以尝试主动问 AI 一个问题…">
+</textarea>
+<div class="actions">
+<button class="btn" id="retry" hidden>重试 AI 回复</button>
+<button class="btn primary" id="send">发送回答 ↗</button>
+<button class="btn primary" id="handsfree">🎧 开始连续对话</button>
+<button class="btn" id="mic">🎙 单次录音</button>
+<button class="btn" id="stopSpeak">◼ 停止朗读</button>
+<button class="btn gold" id="finish">完成练习 · 获取报告</button>
+</div>
+<p class="status" id="draft" lang="fr">
+</p>
+<div class="status" style="margin-top:9px">连续对话：AI 说完自动聆听，你说完停顿后自动发送；每句话会转写。可参考右侧提示，也可以自由发挥。语音功能取决于浏览器和麦克风权限。</div>
+</div>
+</section>
+<aside class="panel">
+<div class="hintblock">
+<div class="eyebrow">Speaking assistant</div>
+<h3 style="margin-top:8px">词汇灵感 · 点击插入</h3>
+<div id="vocab">
+</div>
+</div>
+<div class="hintblock">
+<h3>多种回答方式</h3>
+<div id="examples">
+</div>
+</div>
+<div class="hintblock">
+<h3>主动提问 · 让对话继续</h3>
+<div id="questions">
+</div>
+</div>
+<div class="hintblock">
+<h3>本节学习目标</h3>
+<p class="example" id="objectives">
+</p>
+</div>
+</aside>
+</div>
+</div>
+<div id="reportView" class="hidden">
+<div class="flex" style="justify-content:space-between;margin:25px 0">
+<h2 style="font-family:Georgia,serif;font-weight:500;font-size:30px;margin:0">Session review</h2>
+<div class="flex">
+<button class="btn" id="retryReport" hidden>重试报告</button>
+<button class="btn" id="export">导出对话与报告</button>
+<button class="btn primary" id="returnCourse">继续学习</button>
+</div>
+</div>
+<div class="panel pad">
+<div class="eyebrow">Your progress · 练习复盘</div>
+<div id="reportBody" class="sub" style="margin-top:16px">完成一次练习后会在这里显示报告。</div>
+</div>
+</div>
+</main>
+</div>
+<dialog id="settings" class="modal">
+<h2>AI 模型设置</h2>
+<p id="availability">
+</p>
+<p>AI 模式会把对话文字发送给服务器配置的模型服务商。语音识别由浏览器提供，可能使用浏览器服务商的在线识别服务。</p>
+<form method="dialog" class="actions">
+<button class="btn primary" id="useAI">使用 AI</button>
+<button class="btn" id="demoMode">使用演示</button>
+<button class="btn">关闭</button>
+</form>
+</dialog>
+<script type="module" src="/app.js">
+</script>
+</body>
+</html>

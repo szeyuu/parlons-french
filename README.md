@@ -1,18 +1,45 @@
-# Parlons Voice Beta
+# Parlons · 法语口语练习
 
-## Local preview
-Open `index.html` in Chrome or Edge. Microphone recognition may require an HTTPS origin or localhost, depending on browser.
+Parlons 提供 A1–B2 共 21 个生活情景。选择课程后，可以打字、单次语音转写或开启连续语音。每节课都提供可选的词汇、句型和提问示例。结束后可查看并导出完整对话及报告。
 
-## Private preview deployment
-Upload `index.html` to a static host such as Netlify Drop or Vercel. Use the HTTPS URL and allow microphone access. Test microphone, auto-turn detection, and TTS in your target browser.
+## 本地运行
 
-## IMPORTANT: API security
-This is a **personal prototype**. It calls the model API directly from the browser, so the user's API key is visible to the browser and could be exposed. Do not distribute API keys, hardcode a key in the HTML, or release this as a public multi-user service. Some APIs block cross-origin browser calls.
+需要 Node.js 22 或更新版本，无需安装依赖。
 
-For public deployment, add a server-side API proxy with environment-secret storage, authentication, quotas/rate limiting, and cost controls. This package does NOT include that backend. The app has not been end-to-end tested with a live API or a microphone.
+```sh
+npm test
+npm start
+```
 
-## Known limitations
-- Browser speech recognition may stop on pauses or fail on some platforms.
-- Voice output uses the device's speech synthesis, not streaming audio from the model.
-- Reports are model-generated and may contain errors; pronunciation cannot be scored from transcripts.
-- The included demo mode is scripted, not a real model.
+打开 http://localhost:3000。默认进入脚本演示，演示可用于验证课程、转写、朗读和导出。演示报告只提供基础统计。
+
+## 启用模型
+
+复制 `.env.example` 为 `.env`，填入模型服务商提供的参数。
+
+| 环境变量 | 示例 | 用途 |
+| --- | --- | --- |
+| `MODEL_BASE_URL` | `https://api.openai.com/v1` | 服务端追加 `/chat/completions` |
+| `MODEL_NAME` | `gpt-4.1-mini` | 可替换为服务商提供的低成本兼容模型 |
+| `MODEL_API_KEY` | 由部署平台秘密管理 | 只由后端读取 |
+| `HOST` | `127.0.0.1` | 本地监听地址 |
+| `PORT` | `3000` | 本地监听端口 |
+
+重启后，在「AI 模型设置」选择「使用 AI」，然后打开新课程。兼容服务需要接受 Chat Completions 的 `messages` 和 `max_tokens`。切换模式在新课程生效。对话和报告使用完整会话文字，达到单次会话上限后可以结束并生成报告。刷新会清空页面内记录，需长期保留时请先导出。
+
+## 连续语音与报告
+
+- 使用支持 Web Speech API 的浏览器，在 localhost 或 HTTPS 页面授予麦克风权限。语音识别和合成依赖浏览器及设备，可从 Chrome 开始验证。浏览器的识别服务可能在线处理音频。
+- 开始连续对话后，Camille 朗读，短暂等待后开启麦克风。说完停顿，浏览器确认的最终转写会自动提交。临时转写用于预览。暂停或结束会取消当前尚未提交的语音轮次。识别不可用时仍可输入文字。
+- 「完成练习」会停止语音并生成报告。AI 报告涵盖语法、动词变位、词汇、提问、自然度和互动。纠错条目必须逐字匹配学习者的一次实际发言并包含修改和解释。模型看到的是文字记录，报告不评估发音。
+
+## 部署
+
+1. 部署整个仓库到支持 Node.js 的服务，启动命令为 `npm start`，健康检查可请求 `GET /api/config`。GitHub Pages 等纯静态托管无法提供模型代理。
+2. 配置平台密钥和模型参数。若平台要求监听所有接口，设置 `HOST=0.0.0.0`，由平台注入 `PORT`。提供 HTTPS，且反向代理应保留外部 Host 以通过同源检查。
+3. 启用真实模型的部署应先置于私有访问或身份验证之后。单进程代理设有 30 次/分钟全局请求限流、4 个并发请求、请求体上限、模型超时和输出上限。面向公众部署时，应在网关配置用户认证、按用户配额及供应商账单上限。模型服务商会收到对话文字。
+4. 部署后，用有麦克风和法语声音的设备验证连续四轮、主动提问、暂停/继续、结束与导出，并用服务商真实密钥验证开场、续聊及六维报告。
+
+## 验证
+
+`npm test` 覆盖课程目录、无密钥演示、同源和输入检查、模拟模型请求与完整记录、纠错引文过滤，以及模拟浏览器的语音轮换、临时转写、暂停恢复和权限错误。模拟服务不产生模型费用。真实模型及真实麦克风/扬声器需在目标环境验收。
